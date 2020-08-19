@@ -33,24 +33,19 @@ def convert(filepath):
     with open(filepath) as fp:
         line = fp.readline()
 
-        # parse each line
-        while line and table_name is None:
-
+        while line:
             # find table name and save it in a variable
-            if CREATE_TABLE in line:
-                # get table name
-                table_name = line.split()[2]
-                # remove backticks
-                table_name = table_name.replace("`", "")
+            if table_name is None:
+                if CREATE_TABLE in line:
+                    # get table name
+                    table_name = line.split()[2]
+                    # remove backticks
+                    table_name = table_name.replace("`", "")
+                    line = fp.readline()
+                    continue
                 line = fp.readline()
                 continue
-            line = fp.readline()
 
-        if table_name is None:
-            raise ValueError(
-                f'File {filepath} does not contain a CREATE TABLE STATEMENT')
-
-        while line:
             # parse each line and check for column name and type
             # convert data type from mysql to bigquery using a Look Up Table
             tmp_line = line.split()
@@ -62,13 +57,8 @@ def convert(filepath):
             else:
                 tmp_col_name = tmp_col_name.replace("`", "")
 
-            tmp_type = tmp_line[1]
             # Take all chars till `(`
-            cleaned_type = ''
-            for x in tmp_type:
-                if x == "(":
-                    break
-                cleaned_type = cleaned_type + x
+            cleaned_type = tmp_line[1].split("(")[0]
 
             try:
                 # find corresponing data type in BQ
@@ -81,8 +71,11 @@ def convert(filepath):
             tmp_col_and_type = {"type": cleaned_type, "name": tmp_col_name}
             big_query_list.append(tmp_col_and_type)
 
-            # print(f"Column: {tmp_col_name}, Type: {tmp_type} ")
             line = fp.readline()
+
+        if table_name is None:
+            raise ValueError(
+                f'File {filepath} does not contain a CREATE TABLE STATEMENT')
 
     return table_name, big_query_list
     # TODO:
@@ -92,7 +85,6 @@ def convert(filepath):
 
 if __name__ == "__main__":
     filepath = sys.argv[1]
-    # filepath = "2020-08-17_rds_mysql_salaries_job_titles.sql"  # for debug
     table_name, big_query_list = convert(filepath)
 
     with open(f'{table_name}.json', 'w') as outfile:
