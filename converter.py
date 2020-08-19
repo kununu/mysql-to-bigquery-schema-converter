@@ -1,4 +1,3 @@
-import autopep8
 import json
 import sys
 
