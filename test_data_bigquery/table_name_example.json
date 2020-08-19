@@ -1,0 +1,30 @@
+[
+  {
+    "type": "INTEGER",
+    "name": "id"
+  },
+  {
+    "type": "INTEGER",
+    "name": "job_title_group_id"
+  },
+  {
+    "type": "STRING",
+    "name": "uuid"
+  },
+  {
+    "type": "STRING",
+    "name": "title"
+  },
+  {
+    "type": "INTEGER",
+    "name": "is_primary"
+  },
+  {
+    "type": "STRING",
+    "name": "flag"
+  },
+  {
+    "type": "STRING",
+    "name": "locale"
+  }
+]
