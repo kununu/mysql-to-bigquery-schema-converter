@@ -1,0 +1,32 @@
+[
+  {
+    "type": "INTEGER",
+    "name": "id",
+    "mode": "REQUIRED"
+  },
+  {
+    "type": "STRING",
+    "name": "uuid",
+    "mode": "REQUIRED"
+  },
+  {
+    "type": "STRING",
+    "name": "my_name",
+    "mode": "NULLABLE"
+  },
+  {
+    "type": "INTEGER",
+    "name": "is_true",
+    "mode": "NULLABLE"
+  },
+  {
+    "type": "DATETIME",
+    "name": "created_at",
+    "mode": "NULLABLE"
+  },
+  {
+    "type": "INTEGER",
+    "name": "another_int",
+    "mode": "REQUIRED"
+  }
+]
