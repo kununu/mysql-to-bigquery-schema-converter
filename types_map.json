@@ -1,0 +1,17 @@
+{
+    "char": "STRING",
+    "varchar": "STRING",
+    "text": "STRING",
+    "datetime": "DATETIME",
+    "timestamp": "TIMESTAMP",
+    "date": "DATE",
+    "time": "STRING",
+    "enum": "STRING",
+    "set": "STRING",
+    "int": "INTEGER",
+    "tinyint": "INTEGER",
+    "mediumint": "INTEGER",
+    "bigint": "INTEGER",
+    "float": "FLOAT",
+    "double": "FLOAT"
+}
