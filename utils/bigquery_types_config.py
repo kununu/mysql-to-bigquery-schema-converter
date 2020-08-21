@@ -1,0 +1,2 @@
+BIGQUERY_TYPES = ['STRING', 'INTEGER', 'DATETIME',
+                  'TIMESTAMP', 'DATE', 'FLOAT', 'BOOL']
