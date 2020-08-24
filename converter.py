@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import json
 import sys
 import argparse
@@ -96,6 +98,13 @@ def convert(filepath, extra_type_mappings, extra_field_mappings):
             raise ValueError(
                 f'File {filepath} does not contain a CREATE TABLE STATEMENT')
 
+    # Check if the generated output has valid bigquery data types
+    invalid_types = list(
+        filter(lambda x: x['type'] not in BIGQUERY_TYPES, big_query_list))
+    if len(invalid_types) > 0:
+        raise ValueError(
+            f'The provided data types are not valid in BigQuery: \n{invalid_types}\n')
+
     return table_name, big_query_list
 
 
@@ -124,13 +133,6 @@ if __name__ == "__main__":
 
     table_name, big_query_list = convert(
         filepath, extra_type_mappings, extra_field_mappings)
-
-    # Check if the generated output has valid bigquery data types
-    invalid_types = list(
-        filter(lambda x: x['type'] not in BIGQUERY_TYPES, big_query_list))
-    if len(invalid_types) > 0:
-        raise ValueError(
-            f'The provided data types are not valid in BigQuery: \n{invalid_types}\n')
 
     if output_path is None:
         print(f'\nSchema processed for table: {table_name}\n')
