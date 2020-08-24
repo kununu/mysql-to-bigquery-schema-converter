@@ -1,0 +1,82 @@
+[
+    {
+        "type": "INTEGER",
+        "name": "id",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "INTEGER",
+        "name": "views",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "INTEGER",
+        "name": "cluster",
+        "mode": "NULLABLE"
+    },
+    {
+        "type": "STRING",
+        "name": "uuid",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "STRING",
+        "name": "title",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "INTEGER",
+        "name": "is_primary",
+        "mode": "NULLABLE"
+    },
+    {
+        "type": "STRING",
+        "name": "flag",
+        "mode": "NULLABLE"
+    },
+    {
+        "type": "STRING",
+        "name": "locale",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "STRING",
+        "name": "created_at",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "TIMESTAMP",
+        "name": "updated_at",
+        "mode": "NULLABLE"
+    },
+    {
+        "type": "DATE",
+        "name": "publication_date",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "STRING",
+        "name": "status",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "STRING",
+        "name": "benefits",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "STRING",
+        "name": "answer",
+        "mode": "NULLABLE"
+    },
+    {
+        "type": "FLOAT",
+        "name": "lat",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "FLOAT",
+        "name": "weight",
+        "mode": "REQUIRED"
+    }
+]
