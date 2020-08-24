@@ -64,16 +64,18 @@ class TestConverter(unittest.TestCase):
         self.assertEqual(bigquery_data, big_query_list,
                          msg=f"\nFAILED AT FOLLOWING SCHEMA: {field_mappings_case_sql}")
 
-    @ unittest.expectedFailure
     def test_invalid_sql_provided(self):
         """
         Test if the converter fails when provided with an .sql file missing the CREATE TABLE statement.
         """
 
         invalid_sql_case = TEST_DATA_PATH + "invalid_sql_case.sql"
-        _, big_query_list = converter.convert(invalid_sql_case, None, None)
+        with self.assertRaises(ValueError) as ctx:
+            _, big_query_list = converter.convert(invalid_sql_case, None, None)
 
-    @ unittest.expectedFailure
+        expected = "File test_data/invalid_sql_case.sql does not contain a CREATE TABLE STATEMENT"
+        self.assertEqual(str(ctx.exception), expected)
+
     def test_invalid_type_mappings_provided(self):
         """
         Test if the converter fails when provided with an invalid data type in the custom type map.
@@ -81,10 +83,12 @@ class TestConverter(unittest.TestCase):
         """
 
         type_mappings_case = TEST_DATA_PATH + "type_mappings_case.sql"
-        _, big_query_list = converter.convert(
-            type_mappings_case, INVALID_TYPES_MAP_PATH, None)
+        with self.assertRaises(ValueError) as ctx:
+            _, big_query_list = converter.convert(
+                type_mappings_case, INVALID_TYPES_MAP_PATH, None)
+        expected = "The provided data types are not valid in BigQuery: \n[{'type': 'sTRING', 'name': 'created_at', 'mode': 'REQUIRED'}]\n"
+        self.assertEqual(str(ctx.exception), expected)
 
-    @ unittest.expectedFailure
     def test_invalid_field_mappings_provided(self):
         """
         Test if the converter fails when provided with an invalid data type in the custom field map.
@@ -92,8 +96,12 @@ class TestConverter(unittest.TestCase):
         """
 
         field_mappings_case = TEST_DATA_PATH + "field_mappings_case.sql"
-        _, big_query_list = converter.convert(
-            field_mappings_case, None, INVALID_FIELDS_MAP_PATH)
+        with self.assertRaises(ValueError) as ctx:
+            _, big_query_list = converter.convert(
+                field_mappings_case, None, INVALID_FIELDS_MAP_PATH)
+
+        expected = "The provided data types are not valid in BigQuery: \n[{'type': 'sTRING', 'name': 'created_at', 'mode': 'REQUIRED'}]\n"
+        self.assertEqual(str(ctx.exception), expected)
 
 
 if __name__ == '__main__':
