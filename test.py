@@ -3,7 +3,6 @@
 import unittest
 import converter
 import json
-import os
 from utils.bigquery_types_config import BIGQUERY_TYPES
 
 TEST_DATA_PATH = "test_data/"

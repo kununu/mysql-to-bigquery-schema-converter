@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import json
-import sys
 import argparse
 from utils.bigquery_types_config import BIGQUERY_TYPES
 
