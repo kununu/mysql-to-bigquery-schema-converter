@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="mysql-to-bigquery-schema-converter-lorrandalx",
+    name="mysql-to-bigquery-schema-converter",
     version="0.0.1",
     author="Lorenzo Alfine",
     author_email="lorenzo.alfine@kununu.com",
