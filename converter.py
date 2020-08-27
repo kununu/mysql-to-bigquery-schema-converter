@@ -3,8 +3,10 @@
 import json
 import argparse
 from utils.bigquery_types_config import BIGQUERY_TYPES
+import os
 
-DATA_TYPE_LUT = 'types_map.json'
+dir_path = os.path.dirname(os.path.realpath(__file__))
+DATA_TYPE_LUT = dir_path + '/types_map.json'
 
 
 def fetch_lookup_table(filepath):
