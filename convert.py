@@ -2,7 +2,7 @@
 
 import json
 import argparse
-import converter
+import mysql_to_bigquery_schema_converter as converter
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

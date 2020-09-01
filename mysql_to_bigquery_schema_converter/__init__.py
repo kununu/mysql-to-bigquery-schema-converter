@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from converter.utils.bigquery_types_config import BIGQUERY_TYPES
+from mysql_to_bigquery_schema_converter.utils.bigquery_types_config import BIGQUERY_TYPES
 import os
 import json
 
