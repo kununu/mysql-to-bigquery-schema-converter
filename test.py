@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
 import unittest
-import converter
 import json
-from converter.utils.bigquery_types_config import BIGQUERY_TYPES
+import mysql_to_bigquery_schema_converter as converter
 
 TEST_DATA_PATH = "./test_data"
 TYPES_MAP_PATH = TEST_DATA_PATH + "/type_mappings_map.json"
