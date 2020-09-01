@@ -3,13 +3,13 @@
 import unittest
 import converter
 import json
-from utils.bigquery_types_config import BIGQUERY_TYPES
+from converter.utils.bigquery_types_config import BIGQUERY_TYPES
 
-TEST_DATA_PATH = "test_data/"
-TYPES_MAP_PATH = TEST_DATA_PATH + "type_mappings_map.json"
-FIELD_MAP_PATH = TEST_DATA_PATH + "field_mappings_map.json"
-INVALID_TYPES_MAP_PATH = TEST_DATA_PATH + "invalid_type_mappings_map.json"
-INVALID_FIELDS_MAP_PATH = TEST_DATA_PATH + "invalid_field_mappings_map.json"
+TEST_DATA_PATH = "./test_data"
+TYPES_MAP_PATH = TEST_DATA_PATH + "/type_mappings_map.json"
+FIELD_MAP_PATH = TEST_DATA_PATH + "/field_mappings_map.json"
+INVALID_TYPES_MAP_PATH = TEST_DATA_PATH + "/invalid_type_mappings_map.json"
+INVALID_FIELDS_MAP_PATH = TEST_DATA_PATH + "/invalid_field_mappings_map.json"
 
 
 class TestConverter(unittest.TestCase):
@@ -21,8 +21,8 @@ class TestConverter(unittest.TestCase):
         """
 
         # Point to the default `.sql` case and its relative `.json`
-        default_case_sql = TEST_DATA_PATH + "default_case.sql"
-        big_query_json = TEST_DATA_PATH + "default_case.json"
+        default_case_sql = TEST_DATA_PATH + "/default_case.sql"
+        big_query_json = TEST_DATA_PATH + "/default_case.json"
         with open(big_query_json) as json_file:
             bigquery_data = json.load(json_file)
 
@@ -37,8 +37,8 @@ class TestConverter(unittest.TestCase):
         """
 
         # Point to the type_mappings_case `.sql` case and its relative `.json`
-        type_mappings_case_sql = TEST_DATA_PATH + "type_mappings_case.sql"
-        big_query_json = TEST_DATA_PATH + "type_mappings_case.json"
+        type_mappings_case_sql = TEST_DATA_PATH + "/type_mappings_case.sql"
+        big_query_json = TEST_DATA_PATH + "/type_mappings_case.json"
         with open(big_query_json) as json_file:
             bigquery_data = json.load(json_file)
 
@@ -54,8 +54,8 @@ class TestConverter(unittest.TestCase):
         """
 
         # Point to the field_mappings_case `.sql` case and its relative `.json`
-        field_mappings_case_sql = TEST_DATA_PATH + "field_mappings_case.sql"
-        big_query_json = TEST_DATA_PATH + "field_mappings_case.json"
+        field_mappings_case_sql = TEST_DATA_PATH + "/field_mappings_case.sql"
+        big_query_json = TEST_DATA_PATH + "/field_mappings_case.json"
         with open(big_query_json) as json_file:
             bigquery_data = json.load(json_file)
 
@@ -69,11 +69,11 @@ class TestConverter(unittest.TestCase):
         Test if the converter fails when provided with an .sql file missing the CREATE TABLE statement.
         """
 
-        invalid_sql_case = TEST_DATA_PATH + "invalid_sql_case.sql"
+        invalid_sql_case = TEST_DATA_PATH + "/invalid_sql_case.sql"
         with self.assertRaises(ValueError) as ctx:
             _, big_query_list = converter.convert(invalid_sql_case, None, None)
 
-        expected = "File test_data/invalid_sql_case.sql does not contain a CREATE TABLE STATEMENT"
+        expected = f"File {TEST_DATA_PATH}/invalid_sql_case.sql does not contain a CREATE TABLE STATEMENT"
         self.assertEqual(str(ctx.exception), expected)
 
     def test_invalid_type_mappings_provided(self):
@@ -82,7 +82,7 @@ class TestConverter(unittest.TestCase):
         It refers to the map passed with '--extra-type-mappings'.
         """
 
-        type_mappings_case = TEST_DATA_PATH + "type_mappings_case.sql"
+        type_mappings_case = TEST_DATA_PATH + "/type_mappings_case.sql"
         with self.assertRaises(ValueError) as ctx:
             _, big_query_list = converter.convert(
                 type_mappings_case, INVALID_TYPES_MAP_PATH, None)
@@ -95,7 +95,7 @@ class TestConverter(unittest.TestCase):
         It refers to the map passed with '--extra-field-mappings'.
         """
 
-        field_mappings_case = TEST_DATA_PATH + "field_mappings_case.sql"
+        field_mappings_case = TEST_DATA_PATH + "/field_mappings_case.sql"
         with self.assertRaises(ValueError) as ctx:
             _, big_query_list = converter.convert(
                 field_mappings_case, None, INVALID_FIELDS_MAP_PATH)
