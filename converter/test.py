@@ -5,7 +5,7 @@ import converter
 import json
 from utils.bigquery_types_config import BIGQUERY_TYPES
 
-TEST_DATA_PATH = "test_data/"
+TEST_DATA_PATH = "../test_data/"
 TYPES_MAP_PATH = TEST_DATA_PATH + "type_mappings_map.json"
 FIELD_MAP_PATH = TEST_DATA_PATH + "field_mappings_map.json"
 INVALID_TYPES_MAP_PATH = TEST_DATA_PATH + "invalid_type_mappings_map.json"
@@ -73,7 +73,7 @@ class TestConverter(unittest.TestCase):
         with self.assertRaises(ValueError) as ctx:
             _, big_query_list = converter.convert(invalid_sql_case, None, None)
 
-        expected = "File test_data/invalid_sql_case.sql does not contain a CREATE TABLE STATEMENT"
+        expected = "File ../test_data/invalid_sql_case.sql does not contain a CREATE TABLE STATEMENT"
         self.assertEqual(str(ctx.exception), expected)
 
     def test_invalid_type_mappings_provided(self):
