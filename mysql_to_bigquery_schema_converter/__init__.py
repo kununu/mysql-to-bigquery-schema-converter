@@ -69,8 +69,8 @@ def convert(filepath, extra_type_mappings, extra_field_mappings):
             else:
                 tmp_col_name = tmp_col_name.replace("`", "")
 
-            # Take all chars till `(`
-            cleaned_type = tmp_line[1].split("(")[0]
+            # Remove trailing comma if present, take all chars till `(`
+            cleaned_type = tmp_line[1].rstrip(',').split("(")[0]
 
             try:
                 # find corresponing data type in BQ
