@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/kununulabs/mysql-to-bigquery-schema-converter",
     packages=setuptools.find_packages(),
     package_data={
-        'mysqp_to_bigquery_schema_converter': ['mysql_to_bigquery_schema_converter/types_map.json'],
+        'mysql_to_bigquery_schema_converter': ['types_map.json'],
     },
     classifiers=[
         "Programming Language :: Python :: 3",
