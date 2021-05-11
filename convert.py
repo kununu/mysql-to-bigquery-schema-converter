@@ -20,6 +20,10 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--extra-field-mappings',
                         action='store',
                         help='Path to a .json file used to assign a type to a spefic field.')
+    parser.add_argument('-d', '--drop-virtual-fields',
+                        type=bool,
+                        action='store',
+                        help='The generated .json file will not contain VIRTUAL fields.')
 
     args = parser.parse_args()
     filepath = args.Path
@@ -28,7 +32,7 @@ if __name__ == "__main__":
     extra_field_mappings = args.extra_field_mappings
 
     table_name, big_query_list = converter.convert(
-        filepath, extra_type_mappings, extra_field_mappings)
+        filepath, extra_type_mappings, extra_field_mappings, args.drop_virtual_fields)
 
     if output_path is None:
         print(f'\nSchema processed for table: {table_name}\n')
