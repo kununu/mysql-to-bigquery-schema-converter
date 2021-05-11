@@ -22,9 +22,10 @@ def check_if_required(line):
     return is_field_required
 
 
-def convert(filepath, extra_type_mappings, extra_field_mappings):
+def convert(filepath, extra_type_mappings, extra_field_mappings, drop_virtual_fields=False):
 
     CREATE_TABLE = 'CREATE TABLE'
+    VIRTUAL_COLUMN = ') VIRTUAL'
     table_name = None
     field_to_type_map = {}
 
@@ -54,8 +55,14 @@ def convert(filepath, extra_type_mappings, extra_field_mappings):
                     table_name = table_name.replace("`", "")
                     line = fp.readline()
                     continue
+
                 line = fp.readline()
                 continue
+
+            if VIRTUAL_COLUMN in line:
+                if drop_virtual_fields:
+                    line = fp.readline()
+                    continue
 
             # parse each line and check for column name and type
             # convert data type from mysql to bigquery using a Look Up Table

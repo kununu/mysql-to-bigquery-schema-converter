@@ -29,6 +29,20 @@ class TestConverter(unittest.TestCase):
         self.assertEqual(bigquery_data, big_query_list,
                          msg=f"\nFAILED AT FOLLOWING SCHEMA: {default_case_sql}")
 
+    def test_output_correctly_generated_virtual(self):
+        """
+        Test if converted mysql schema matches with the BigQuery json one.
+        """
+
+        virtual_case_sql = TEST_DATA_PATH + "/virtual_case.sql"
+        big_query_json = TEST_DATA_PATH + "/virtual_case.json"
+        with open(big_query_json) as json_file:
+            bigquery_data = json.load(json_file)
+
+        _, big_query_list = converter.convert(virtual_case_sql, None, None, True)
+        self.assertEqual(bigquery_data, big_query_list,
+                         msg=f"\nFAILED AT FOLLOWING SCHEMA: {virtual_case_sql}")
+
     def test_output_type_mappings_case(self):
         """
         Test if the converted schema is correct when providing a custom data type mapping.
