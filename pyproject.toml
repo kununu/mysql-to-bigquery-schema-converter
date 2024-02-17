@@ -16,7 +16,7 @@ python = "~3.11"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1.7.6"
-black = "^23.12.1"
+black = "^24.2.0"
 
 [build-system]
 requires = ["poetry-core"]
