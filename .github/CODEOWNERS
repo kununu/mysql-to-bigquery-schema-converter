@@ -1,6 +1,1 @@
-# These owners will be the default owners for everything in
-# the repo.
-# Teams can be specified as code owners as well. Teams should
-# be identified in the format @org/team-name. Teams must have
-# explicit write access to the repository.
-* @kununu/des
+* @kununu/data-engineers
