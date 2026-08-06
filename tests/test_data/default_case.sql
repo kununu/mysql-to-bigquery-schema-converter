@@ -17,6 +17,8 @@ CREATE TABLE `default_case` (
   `answer` text COLLATE utf8_unicode_ci,
   `lat` float(9,6) NOT NULL,
   `weight` double NOT NULL,
+  `permissions` bit(8) NOT NULL,
+  `score` DECIMAL(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_91416C22D17F50A6` (`uuid`),
   KEY `IDX_91416C2245B63C23` (`views`,`locale`,`is_primary`,`flag`),
