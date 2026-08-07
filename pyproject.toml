@@ -1,23 +1,23 @@
-[tool.poetry]
-name = "mysql-to-bigquery-schema-converter"
-version = "1.0.1"
-description = "Can be used to convert mysql schema files to BigQuery schemas"
+[project]
 authors = [
-    "Franz Buchsbaum <franz.buchsbaum@kununu.com>",
-    "Lorenzo Alfine <lorenzo.alfine@kununu.com>",
+  {"name" = "Franz Buchsbaum", "email" = "franz.buchsbaum@kununu.com"},
+  {"name" = "Lorenzo Alfine", "email" = "lorenzo.alfine@kununu.com"},
 ]
+description = "Can be used to convert mysql schema files to BigQuery schemas"
 license = "MIT"
+name = "mysql-to-bigquery-schema-converter"
 readme = "README.md"
-packages = [{ include = "mysql_to_bigquery_schema_converter" }]
+requires-python = ">=3.9,<3.15"
+version = "1.2.0"
 
-[tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+[project.scripts]
+mysql-to-bigquery-schema-converter = "mysql_to_bigquery_schema_converter.cli:main"
 
-[tool.poetry.group.dev.dependencies]
-black = "^24.8.0"
-isort = "^5.13.2"
-pylint = "^3.2.3"
+[dependency-groups]
+dev = [
+  "ruff ~= 0.16",
+]
 
 [build-system]
-requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]

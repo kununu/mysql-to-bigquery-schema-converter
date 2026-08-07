@@ -7,7 +7,7 @@
     "float": "FLOAT",
     "double": "FLOAT",
     "decimal": "FLOAT",
-    "bit": "BYTE",
+    "bit": "BYTES",
     "bool": "BOOL",
     "boolean": "BOOLEAN",
     "year": "INTEGER",

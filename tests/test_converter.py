@@ -1,0 +1,161 @@
+import json
+import unittest
+from pathlib import Path
+
+from mysql_to_bigquery_schema_converter import converter
+
+TEST_DATA_PATH = Path(__file__).parent / "test_data"
+TYPES_MAP_PATH = TEST_DATA_PATH / "type_mappings_map.json"
+FIELD_MAP_PATH = TEST_DATA_PATH / "field_mappings_map.json"
+INVALID_TYPES_MAP_PATH = TEST_DATA_PATH / "invalid_type_mappings_map.json"
+INVALID_FIELDS_MAP_PATH = TEST_DATA_PATH / "invalid_field_mappings_map.json"
+
+
+class TestConverter(unittest.TestCase):
+    maxDiff = None
+
+    def test_output_correctly_generated_default(self):
+        """
+        Test if converted mysql schema matches with the BigQuery json one.
+        """
+
+        # Point to the default `.sql` case and its relative `.json`
+        default_case_sql = TEST_DATA_PATH / "default_case.sql"
+        big_query_json = TEST_DATA_PATH / "default_case.json"
+        with open(big_query_json, encoding="utf-8") as json_file:
+            bigquery_data = json.load(json_file)
+
+        _, big_query_list = converter.convert(default_case_sql, None, None)
+        self.assertEqual(
+            bigquery_data,
+            big_query_list,
+            msg=f"\nFAILED AT FOLLOWING SCHEMA: {default_case_sql}",
+        )
+
+    def test_table_name_parsed_with_if_not_exists(self):
+        """
+        Test if the table name is parsed correctly from a
+        'CREATE TABLE IF NOT EXISTS' statement.
+        """
+
+        if_not_exists_case_sql = TEST_DATA_PATH / "if_not_exists_case.sql"
+        expected_schema = [
+            {"type": "INTEGER", "name": "id", "mode": "REQUIRED"},
+            {"type": "STRING", "name": "name", "mode": "REQUIRED"},
+        ]
+
+        table_name, big_query_list = converter.convert(
+            if_not_exists_case_sql, None, None
+        )
+        self.assertEqual("if_not_exists_case", table_name)
+        self.assertEqual(
+            expected_schema,
+            big_query_list,
+            msg=f"\nFAILED AT FOLLOWING SCHEMA: {if_not_exists_case_sql}",
+        )
+
+    def test_output_correctly_generated_virtual(self):
+        """
+        Test if converted mysql schema matches with the BigQuery json one.
+        """
+
+        virtual_case_sql = TEST_DATA_PATH / "virtual_case.sql"
+        big_query_json = TEST_DATA_PATH / "virtual_case.json"
+        with open(big_query_json, encoding="utf-8") as json_file:
+            bigquery_data = json.load(json_file)
+
+        _, big_query_list = converter.convert(virtual_case_sql, None, None, True)
+        self.assertEqual(
+            bigquery_data,
+            big_query_list,
+            msg=f"\nFAILED AT FOLLOWING SCHEMA: {virtual_case_sql}",
+        )
+
+    def test_output_type_mappings_case(self):
+        """
+        Test if the converted schema is correct when providing a custom data type mapping.
+        The custom map is provided via CLI with the '-t', '--extra-type-mappings' option.
+        """
+
+        # Point to the type_mappings_case `.sql` case and its relative `.json`
+        type_mappings_case_sql = TEST_DATA_PATH / "type_mappings_case.sql"
+        big_query_json = TEST_DATA_PATH / "type_mappings_case.json"
+        with open(big_query_json, encoding="utf-8") as json_file:
+            bigquery_data = json.load(json_file)
+
+        _, big_query_list = converter.convert(
+            type_mappings_case_sql, TYPES_MAP_PATH, None
+        )
+        self.assertEqual(
+            bigquery_data,
+            big_query_list,
+            msg=f"\nFAILED AT FOLLOWING SCHEMA: {type_mappings_case_sql}",
+        )
+
+    def test_output_field_mappings_case(self):
+        """
+        Test if the converted schema is correct when providing a custom field type mapping.
+        The custom map is provided via CLI with the '-f', '--extra-field-mappings' option.
+        """
+
+        # Point to the field_mappings_case `.sql` case and its relative `.json`
+        field_mappings_case_sql = TEST_DATA_PATH / "field_mappings_case.sql"
+        big_query_json = TEST_DATA_PATH / "field_mappings_case.json"
+        with open(big_query_json, encoding="utf-8") as json_file:
+            bigquery_data = json.load(json_file)
+
+        _, big_query_list = converter.convert(
+            field_mappings_case_sql, None, FIELD_MAP_PATH
+        )
+        self.assertEqual(
+            bigquery_data,
+            big_query_list,
+            msg=f"\nFAILED AT FOLLOWING SCHEMA: {field_mappings_case_sql}",
+        )
+
+    def test_invalid_sql_provided(self):
+        """
+        Test if the converter fails when provided with an .sql file missing the CREATE TABLE statement.
+        """
+
+        invalid_sql_case = TEST_DATA_PATH / "invalid_sql_case.sql"
+        with self.assertRaises(ValueError) as ctx:
+            converter.convert(invalid_sql_case, None, None)
+
+        expected = f"File {invalid_sql_case} does not contain a CREATE TABLE STATEMENT"
+        self.assertEqual(str(ctx.exception), expected)
+
+    def test_invalid_type_mappings_provided(self):
+        """
+        Test if the converter fails when provided with an invalid data type in the custom type map.
+        It refers to the map passed with '--extra-type-mappings'.
+        """
+
+        type_mappings_case = TEST_DATA_PATH / "type_mappings_case.sql"
+        with self.assertRaises(ValueError) as ctx:
+            converter.convert(type_mappings_case, INVALID_TYPES_MAP_PATH, None)
+        expected = (
+            "The provided data types are not valid in BigQuery: \n"
+            "[{'type': 'sTRING', 'name': 'created_at', 'mode': 'REQUIRED'}]\n"
+        )
+        self.assertEqual(str(ctx.exception), expected)
+
+    def test_invalid_field_mappings_provided(self):
+        """
+        Test if the converter fails when provided with an invalid data type in the custom field map.
+        It refers to the map passed with '--extra-field-mappings'.
+        """
+
+        field_mappings_case = TEST_DATA_PATH / "field_mappings_case.sql"
+        with self.assertRaises(ValueError) as ctx:
+            converter.convert(field_mappings_case, None, INVALID_FIELDS_MAP_PATH)
+
+        expected = (
+            "The provided data types are not valid in BigQuery: \n"
+            "[{'type': 'sTRING', 'name': 'created_at', 'mode': 'REQUIRED'}]\n"
+        )
+        self.assertEqual(str(ctx.exception), expected)
+
+
+if __name__ == "__main__":
+    unittest.main()

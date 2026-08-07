@@ -78,5 +78,15 @@
         "type": "FLOAT",
         "name": "weight",
         "mode": "REQUIRED"
+    },
+    {
+        "type": "BYTES",
+        "name": "permissions",
+        "mode": "REQUIRED"
+    },
+    {
+        "type": "FLOAT",
+        "name": "score",
+        "mode": "NULLABLE"
     }
 ]

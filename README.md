@@ -15,14 +15,16 @@ Convert MySQL schema (from a `.sql` file) into a BigQuery-compatible schema in J
 
 ### Using the Converter:
 
-To convert a MySQL `.sql` schema to a BigQuery JSON schema, use the `convert.py` script:
+To convert a MySQL `.sql` schema to a BigQuery JSON schema:
 
 ```bash
-poetry run  python convert.py <path_to_sql_file> [options]
+poetry run mysql-to-bigquery-schema-converter <path_to_sql_file> [options]
 ```
 
+Alternatively, install the package and use the `mysql-to-bigquery-schema-converter` command directly.
+
 #### Options:
-* `-o`, `--output-path` : Specify the output path where the converted `.json` file should be stored. By default, the output will be printed to the console. If specified, the output file will be named after the table, e.g., `cool_table.json`.
+* `-o`, `--output-path` : File path where the converted `.json` schema should be stored. By default, the schema is printed to stdout.
 * `-t`, `--extra-type-mappings` : Provide a path to a `.json` file to extend and/or override default type mappings.
 * `-f`, `--extra-field-mappings` : Provide a path to a `.json` file to assign a specific type to a particular field.
 * `-d`, `--drop-virtual-fields` : Set this flag to exclude virtual fields in the generated `.json` schema.
@@ -33,11 +35,11 @@ poetry run  python convert.py <path_to_sql_file> [options]
 To validate the conversion, run the tests:
 
 ```
-poetry run python test.py
+poetry run python -m unittest discover -s tests
 ```
 
 
-The `test_data` folder contains test cases and their expected outputs.
+The `tests/test_data` folder contains test cases and their expected outputs.
 
 ## Custom Mappings:
 
@@ -45,7 +47,6 @@ The default MySQL to BigQuery type mappings are in `types_map.json`. If you need
 
 ## Contribution:
 
-- For security vulnerabilities, see `SECURITY.md`.
 - Pull requests and issues for improvements are welcome.
 
 ## License:
